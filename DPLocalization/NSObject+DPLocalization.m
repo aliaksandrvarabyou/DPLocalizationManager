@@ -19,6 +19,7 @@ static NSString * const kAutolocPrefixKeyKey = @"autolocPrefixKeyKey";
 static NSString * const kAutolocArgsKey = @"autolocArgsKey";
 static NSString * const kAutolocOnDeallocBlockKey = @"autolocOnDeallocBlockKey";
 static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
+static NSString * const kAutolocAttributedStringKey = @"autolocAttributedStringKey";
 
 
 @interface __AutolocOnDeallocContainer__ : NSObject
@@ -156,6 +157,15 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
     return objc_getAssociatedObject(self, (__bridge const void *)(kAutolocArgsKey));
 }
 
+- (void)setLocalizedAttributedString:(LocalizedAttributedStringBlock)localizedAttributedString {
+    objc_setAssociatedObject(self, (__bridge void *)(kAutolocAttributedStringKey), localizedAttributedString, OBJC_ASSOCIATION_RETAIN);
+    [self localize];
+}
+
+- (LocalizedAttributedStringBlock)localizedAttributedString {
+    return objc_getAssociatedObject(self, (__bridge const void *)(kAutolocAttributedStringKey));
+}
+
 @end
 
 #if DPLocalization_UIKit
@@ -182,6 +192,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedText = self.localizedAttributedString();
+        return;
+    }
+    
     if ([self isAttributedKey]) {
         NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         paragraph.alignment = self.textAlignment;
@@ -295,6 +310,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedPlaceholder = self.localizedAttributedString();
+        return;
+    }
+    
     if ([self isAttributedKey]) {
         NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         paragraph.alignment = self.textAlignment;
@@ -330,6 +350,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedText = self.localizedAttributedString();
+        return;
+    }
+    
     if ([self isAttributedKey]) {
         NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         paragraph.alignment = self.textAlignment;
@@ -459,6 +484,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedTitle = self.localizedAttributedString();
+        return;
+    }
+    
     if ([self isAttributedKey]) {
         self.attributedTitle = [NSAttributedString dp_attibutedStringWithString:value font:[NSFont menuBarFontOfSize:0] textColor:nil];
     }
@@ -507,6 +537,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedTitle = self.localizedAttributedString();
+        return;
+    }
+    
     if ([self isAttributedKey]) {
         NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         paragraph.alignment = self.alignment;
@@ -542,6 +577,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedStringValue = self.localizedAttributedString();
+        return;
+    }
+    
     if ([self isAttributedKey]) {
         NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         paragraph.alignment = self.alignment;
@@ -568,6 +608,11 @@ static NSString * const kAutolocAttributedFlagKey = @"autolocAttributedFlag";
 }
 
 - (void)setLocalizedValue:(id)value forKeyPath:(NSString *)keyPath {
+    if (nil != self.localizedAttributedString) {
+        self.attributedStringValue = self.localizedAttributedString();
+        return;
+    }
+    
     if ([keyPath isEqualToString:@"stringValue"] && [self isAttributedKey]) {
         NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         paragraph.alignment = self.alignment;

@@ -19,7 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
  @category NSObject (DPLocalization)
  @brief Add ability to automatic localization.
  */
+
+typedef NSAttributedString* _Nullable (^LocalizedAttributedStringBlock)();
+
 @interface NSObject (DPLocalization)
+
+@property (nonatomic) LocalizedAttributedStringBlock localizedAttributedString;
+
 /**
  @brief Setup update value automaticaly after DPLanguageDidChangeNotification notification was posted.
  @param key         The key for a string in the Localizable.strings table.
