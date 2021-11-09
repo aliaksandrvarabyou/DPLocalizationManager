@@ -157,8 +157,13 @@ static NSString * const kAutolocAttributedStringKey = @"autolocAttributedStringK
     return objc_getAssociatedObject(self, (__bridge const void *)(kAutolocArgsKey));
 }
 
+- (void)setAutolocalizationKey:(NSString *)autolocalizationKey {
+    // Do nothing
+}
+
 - (void)setLocalizedAttributedString:(LocalizedAttributedStringBlock)localizedAttributedString {
     objc_setAssociatedObject(self, (__bridge void *)(kAutolocAttributedStringKey), localizedAttributedString, OBJC_ASSOCIATION_RETAIN);
+    [self setAutolocalizationKey:@""];
     [self localize];
 }
 
